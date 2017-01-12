@@ -57,6 +57,24 @@ module Payday
 
     def self.company_banner(invoice, pdf)
       # render the logo
+      logo_height = Payday::Config.default.hide_logo ? 0 : render_logo(invoice,pdf)
+
+
+      # render the company details
+      table_data = []
+      table_data << [bold_cell(pdf, invoice_or_default(invoice, :company_name).strip, size: 12)]
+
+      invoice_or_default(invoice, :company_details).lines.each { |line| table_data << [line] }
+
+      table = pdf.make_table(table_data, cell_style: { borders: [], padding: 0 })
+      pdf.bounding_box([pdf.bounds.width - table.width, pdf.bounds.top], width: table.width, height: table.height + 5) do
+        table.draw
+      end
+
+      pdf.move_cursor_to(pdf.bounds.top - logo_height - 20)
+    end
+
+    def self.render_logo(invoice,pdf)
       image = invoice_or_default(invoice, :invoice_logo)
       height = nil
       width = nil
@@ -75,19 +93,7 @@ module Payday
         logo_info = pdf.image(image, at: pdf.bounds.top_left, width: width, height: height)
         logo_height = logo_info.scaled_height
       end
-
-      # render the company details
-      table_data = []
-      table_data << [bold_cell(pdf, invoice_or_default(invoice, :company_name).strip, size: 12)]
-
-      invoice_or_default(invoice, :company_details).lines.each { |line| table_data << [line] }
-
-      table = pdf.make_table(table_data, cell_style: { borders: [], padding: 0 })
-      pdf.bounding_box([pdf.bounds.width - table.width, pdf.bounds.top], width: table.width, height: table.height + 5) do
-        table.draw
-      end
-
-      pdf.move_cursor_to(pdf.bounds.top - logo_height - 20)
+      logo_height
     end
 
     def self.bill_to_ship_to(invoice, pdf)
