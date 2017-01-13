@@ -10,6 +10,7 @@ module Payday
             [LineItem.new(price: 10, quantity: 3, description: "Shirts")],
           shipping_rate: 15.00, shipping_description: "USPS Priority Mail:",
           tax_rate: 0.125, tax_description: "Local Sales Tax, 12.5%",
+	  terms: "Due on receipt",
           invoice_date: Date.civil(1993, 4, 12))
 
       expect(i.po_number).to eq "1234-ABCD"
@@ -23,6 +24,7 @@ module Payday
       expect(i.tax_rate).to eq(BigDecimal.new("0.125"))
       expect(i.tax_description).to eq("Local Sales Tax, 12.5%")
       expect(i.invoice_date).to eq(Date.civil(1993, 4, 12))
+      expect(i.terms).to eq("Due on receipt")
     end
 
     it "should total all of the line items into a subtotal correctly" do
