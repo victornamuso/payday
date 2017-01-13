@@ -156,6 +156,12 @@ module Payday
                        bold_cell(pdf, due_date, align: :right)]
       end
 
+      if defined?(invoice.po_number) && invoice.po_number
+        table_data << [bold_cell(pdf, I18n.t("payday.invoice.po_number", default: "PO #:")),
+                       bold_cell(pdf, invoice.po_number, align: :right)]
+      end
+
+
       # Paid on
       if defined?(invoice.paid_at) && invoice.paid_at
         if invoice.paid_at.is_a?(Date) || invoice.paid_at.is_a?(Time)
