@@ -5,6 +5,8 @@ module Payday
 
     it "should be able to be initalized with a hash of options" do
       i = Invoice.new(invoice_number: 20, bill_to: "Here", ship_to: "There",
+		      company_name: "Foobar Company",
+		company_details: "1234 Anywhere Lane",
           notes: "These are some notes.",po_number: "1234-ABCD",
           line_items:
             [LineItem.new(price: 10, quantity: 3, description: "Shirts")],
@@ -25,6 +27,8 @@ module Payday
       expect(i.tax_description).to eq("Local Sales Tax, 12.5%")
       expect(i.invoice_date).to eq(Date.civil(1993, 4, 12))
       expect(i.terms).to eq("Due on receipt")
+      expect(i.company_details).to eq "1234 Anywhere Lane"
+      expect(i.company_name).to eq "Foobar Company"
     end
 
     it "should total all of the line items into a subtotal correctly" do
