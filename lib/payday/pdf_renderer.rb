@@ -207,7 +207,7 @@ module Payday
                      bold_cell(pdf, I18n.t("payday.line_item.unit_price", default: "Unit Price"), align: :center, borders: []),
                      bold_cell(pdf, I18n.t("payday.line_item.quantity", default: "Quantity"), align: :center, borders: []),
                      bold_cell(pdf, I18n.t("payday.line_item.amount", default: "Amount"), align: :center, borders: [])]
-      invoice.line_items.each do |line|
+      invoice.line_items.order(:id).each do |line|
         table_data << [line.description,
                        (line.display_price || number_to_currency(line.price, invoice)),
                        (line.display_quantity || BigDecimal.new(line.quantity.to_s).to_s("F")),
