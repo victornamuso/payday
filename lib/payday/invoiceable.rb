@@ -24,15 +24,15 @@ module Payday::Invoiceable
   end
 
   # The tax for this invoice, as a BigDecimal
-  def tax
-    if defined?(tax_rate)
-      calculated = subtotal * tax_rate
-      return 0 if calculated < 0
-      calculated
-    else
-      0
-    end
-  end
+
+  #   if defined?(tax_rate)
+  #     calculated = subtotal * tax_rate
+  #     return 0 if calculated < 0
+  #     calculated
+  #   else
+  #     0
+  #   end
+  # end
 
   # TODO Add a per weight unit shipping cost
   # Calculates the shipping
